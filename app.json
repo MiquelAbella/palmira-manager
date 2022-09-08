@@ -11,20 +11,30 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "notification": {
+      "icon": "./assets/locationIcon.png",
+      "color": "#ffffff",
+      "iosDisplayInForeground": true
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAds0mfGoK31_WygRPC6-J-_LBAeSqO3zM"
+        }
+      },
+      "package": "com.mikebeegar.managerfrontend"
     },
     "web": {
       "favicon": "./assets/favicon.png"
