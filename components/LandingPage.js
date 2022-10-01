@@ -1,17 +1,86 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  Image,
+  Button,
+  Linking,
+} from "react-native";
+import * as Location from "expo-location";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import Modal from "react-native-modal";
+import locationIcon from "../assets/locationIcon.png";
 
 export const LandingPage = () => {
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false);
-
+  const [isModalVisible, setIsModalVisible] = useState(true);
+  const handlePress = () => {
+    Linking.openURL("https://miquelabella.github.io/palmira-desktop/");
+  };
   const handleOpenLoginForm = () => {
     setIsLoginFormOpen(true);
   };
+
+  const getDataFromLocalStorage = async () => {
+    let response = await AsyncStorage.getItem("permissions");
+
+    if (response === "true") {
+      setIsModalVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    getDataFromLocalStorage();
+  }, []);
+
+  const handleAcceptLocationPermission = () => {
+    (async () => {
+      await Location.requestForegroundPermissionsAsync();
+      let { status } = await Location.requestBackgroundPermissionsAsync();
+
+      if (status === "granted") {
+        await AsyncStorage.setItem("permissions", "true");
+      } else {
+        await AsyncStorage.setItem("permissions", "false");
+      }
+    })();
+    setIsModalVisible(false);
+  };
+
+  const handleDenyLocationPermission = async () => {
+    await AsyncStorage.setItem("permissions", "true");
+    setIsModalVisible(false);
+  };
   return (
     <>
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modal}>
+          <Image source={locationIcon} style={{ height: 50, width: 50 }} />
+          <Text style={{ width: 275, fontSize: 15 }}>
+            Palmira necesita obtener la ubicación de la persona cuidada para
+            almacenar los datos del lugar en que ha usado la aplicación.
+          </Text>
+          <Text style={{ width: 275, fontSize: 15 }}>
+            Palmira necesita obtener la ubicación en segundo plano de la persona
+            cuidada para enviarte su ubicación en caso de que salga fisicamente
+            del radio máximo establecido por ti incluso cuando la aplicación
+            esté cerrada o no esté en uso. Los datos se pueden usar para apoyar
+            la publicidad.
+          </Text>
+          <Text style={{ width: 275, fontSize: 15 }}>
+            Se pedirá que se acepten los permisos en su aplicación.
+          </Text>
+          <Button title="Permitir" onPress={handleAcceptLocationPermission} />
+          <Button title="Denegar" onPress={handleDenyLocationPermission} />
+        </View>
+      </Modal>
       {!isLoginFormOpen && !isRegisterFormOpen ? (
         <View style={styles.container}>
           <Text style={styles.title}>Palmira</Text>
@@ -36,6 +105,7 @@ export const LandingPage = () => {
           setIsLoginFormOpen={setIsLoginFormOpen}
         />
       )}
+      <Button title={"Política de privacidad"} onPress={handlePress} />
     </>
   );
 };
@@ -76,5 +146,11 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  modal: {
+    height: 500,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
 });

@@ -120,6 +120,12 @@ export const startPostSettings = (uid, settingsValues) => {
   };
 };
 
+export const startSwitchLogin = () => {
+  return async (dispatch) => {
+    dispatch(isNotLoading());
+  };
+};
+
 const postSettings = (user) => ({
   type: "USER_POST_SETTINGS",
   payload: user,

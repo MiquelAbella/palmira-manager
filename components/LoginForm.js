@@ -6,10 +6,11 @@ import {
   TouchableHighlight,
   View,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
-import { startLogin } from "../actions/UserActions";
+import { startLogin, startSwitchLogin } from "../actions/UserActions";
 
 import * as Notifications from "expo-notifications";
 
@@ -36,7 +37,14 @@ export const LoginForm = ({ setIsLoginFormOpen, setIsRegisterFormOpen }) => {
     registerForPushNotificationsAsync();
 
     let token = (await Notifications.getExpoPushTokenAsync()).data;
-    dispatch(startLogin(loginValues, token));
+
+    if (token) {
+      dispatch(startLogin(loginValues, token));
+    } else {
+      dispatch(startSwitchLogin());
+      Alert.alert("Algo fué mal en un servicio externo, inténtelo de nuevo", "", [{ text: "OK" }]);
+      return;
+    }
   };
 
   return (
