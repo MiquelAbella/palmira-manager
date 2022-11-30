@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
   ActivityIndicator,
   Alert,
@@ -70,23 +70,23 @@ export const LoginForm = ({ setIsLoginFormOpen, setIsRegisterFormOpen }) => {
       {isLoading ? (
         <ActivityIndicator size="large" />
       ) : (
-        <TouchableHighlight
+        <TouchableOpacity
           style={styles.submitButton}
           onPress={handleSubmitForm}
         >
           <Text style={styles.button}>Acceda</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       )}
       <View style={styles.buttonsContainer}>
-        <TouchableHighlight onPress={handleGoBack}>
+        <TouchableOpacity onPress={handleGoBack}>
           <Text style={styles.backButton}>Atrás</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
+        </TouchableOpacity>
+        <TouchableOpacity
           style={styles.touchable}
           onPress={handleOpenLoginForm}
         >
           <Text style={styles.redirectTxt}>¿No tiene cuenta?</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );

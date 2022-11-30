@@ -126,6 +126,32 @@ export const startSwitchLogin = () => {
   };
 };
 
+export const startGetUser = (uid) => {
+  return async (dispatch) => {
+    dispatch(isLoading());
+    await axios
+      .post("https://hidden-journey-49991.herokuapp.com/api/auth/getUser", {
+        uid,
+      })
+      .then((res) => {
+        if (res.data.ok) {
+          dispatch(getUser(res.data.user));
+        } else {
+          console.log('ok');
+        }
+        dispatch(isNotLoading());
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+};
+
+const getUser = (user) => ({
+  type: "USER_GET",
+  payload: user,
+});
+
 const postSettings = (user) => ({
   type: "USER_POST_SETTINGS",
   payload: user,

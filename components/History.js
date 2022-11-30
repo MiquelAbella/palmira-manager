@@ -8,8 +8,6 @@ export const History = () => {
     (state) => state.auth
   );
 
-  console.log(position);
-
   const historyMoments = useMemo(() => {
     let newHistory = history.slice().reverse();
     return history.length ? newHistory : [];

@@ -41,7 +41,7 @@ export const Chart = () => {
         labels[labels.length - 1],
       ];
     }
-    console.log(labels);
+
     return [labels, labelsToShow];
   };
   let labels = getLabels();
@@ -99,7 +99,7 @@ export const Chart = () => {
           <View>
             <LineChart
               data={{
-                labels: labels[1],
+                // labels: labels[1],
                 datasets: [
                   {
                     data: getOcurrences(),

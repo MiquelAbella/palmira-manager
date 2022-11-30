@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   Image,
   Button,
   Linking,
@@ -87,12 +87,12 @@ export const LandingPage = () => {
           <Text style={styles.subtitle}>
             Tu asistente virtual de proximidad para quien mas quieres
           </Text>
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.touchable}
             onPress={handleOpenLoginForm}
           >
             <Text style={styles.button}>Empezar</Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       ) : isRegisterFormOpen ? (
         <RegisterForm

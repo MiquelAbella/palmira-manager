@@ -4,7 +4,7 @@ import {
   View,
   Image,
   StyleSheet,
-  TouchableHighlight,
+  TouchableOpacity,
 } from "react-native";
 
 import { useNavigation, useNavigationState } from "@react-navigation/native";
@@ -44,7 +44,7 @@ export const NavBar = () => {
         justifyContent: "space-around",
       }}
     >
-      <TouchableHighlight
+      <TouchableOpacity
         onPress={() => {
           navigation.navigate("form");
         }}
@@ -55,8 +55,8 @@ export const NavBar = () => {
             source={require("../assets/formIcon.png")}
           />
         </View>
-      </TouchableHighlight>
-      <TouchableHighlight
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() => {
           navigation.navigate("chart");
         }}
@@ -67,8 +67,8 @@ export const NavBar = () => {
             source={require("../assets/chartIcon.png")}
           />
         </View>
-      </TouchableHighlight>
-      <TouchableHighlight
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() => {
           navigation.navigate("history");
         }}
@@ -79,8 +79,8 @@ export const NavBar = () => {
             source={require("../assets/historyIcon.png")}
           />
         </View>
-      </TouchableHighlight>
-      <TouchableHighlight
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() => {
           navigation.navigate("settings");
         }}
@@ -91,7 +91,7 @@ export const NavBar = () => {
             source={require("../assets/settingsIcon.png")}
           />
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     </View>
   );
 };

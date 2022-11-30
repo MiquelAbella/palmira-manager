@@ -37,6 +37,12 @@ export const userReducer = (state = INITIAL_STATE, action) => {
         ...state,
         ...action.payload,
       };
+    case "USER_GET": {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
     default:
       return state;
   }

@@ -6,7 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Dimensions,
-  TouchableHighlight,
+  TouchableOpacity,
   Switch,
   ActivityIndicator,
 } from "react-native";
@@ -26,6 +26,7 @@ export const Settings = () => {
     position,
     isLoading,
     language,
+    areNotificationsActive,
   } = useSelector((state) => state.auth);
 
   const [settingsValues, setSettingsValues] = useState({
@@ -35,7 +36,7 @@ export const Settings = () => {
       ? position
       : [41.59166037366354, 0.6460271847924614],
     minimumDistance: minimumDistance ? minimumDistance : 1000,
-    areNotificationsActive: true,
+    areNotificationsActive: areNotificationsActive !== true ? false : true,
     language: language ? language : "es-ES",
   });
 
@@ -73,7 +74,7 @@ export const Settings = () => {
           </Text>
         )}
         <View style={styles.langSelectorContainer}>
-          <TouchableHighlight
+          <TouchableOpacity
             style={[
               styles.langSelector,
               {
@@ -96,8 +97,8 @@ export const Settings = () => {
             >
               Castellano
             </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
+          </TouchableOpacity>
+          <TouchableOpacity
             style={[
               styles.langSelector,
               {
@@ -118,7 +119,7 @@ export const Settings = () => {
             >
               Català
             </Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
         {settingsValues.language === "es-ES" ? (
           <Text style={styles.hourText}>Nombre de la persona cuidada</Text>
@@ -211,14 +212,14 @@ export const Settings = () => {
         {isLoading ? (
           <ActivityIndicator />
         ) : (
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.touchable}
             onPress={handleSubmitForm}
           >
             <Text onPress={handleSubmitForm} style={styles.button}>
               Guardar
             </Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         )}
       </View>
     </ScrollView>

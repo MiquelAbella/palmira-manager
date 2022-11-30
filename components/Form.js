@@ -1,25 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
-  TouchableHighlight,
+  TouchableOpacity,
   ScrollView,
   ActivityIndicator,
   Image,
+  Alert,
 } from "react-native";
 
-import { startSetSchedule } from "../actions/UserActions";
+import { startGetUser, startSetSchedule } from "../actions/UserActions";
 
 import openMap from "react-native-open-maps";
 
 export const Form = () => {
   const dispatch = useDispatch();
-  const { uid, schedule, lastKnownLocation, isLoading, language } = useSelector(
-    (state) => state.auth
-  );
+  const { uid, schedule, lastKnownLocation, isLoading, language, elderName } =
+    useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (
+      lastKnownLocation.length &&
+      new Date().getTime() > lastKnownLocation[1] + 600000
+    ) {
+      Alert.alert(
+        "Aplicación desconectad",
+        `Debería reiniciar la aplicación de ${elderName}, es posible que se haya desconectado de la red en algun momento y no es posible actualizar su ubicación. Cierre la aplicación de ${elderName} y vuélvala a iniciar.`,
+        [{ text: "OK" }]
+      );
+    }
+  }, []);
 
   const date = new Date(lastKnownLocation[1]);
   const dateString =
@@ -267,19 +280,28 @@ export const Form = () => {
           twentythree: "",
         }
   );
-
+  const handleRefresh = () => {
+    dispatch(startGetUser(uid));
+  };
   return (
     <>
       <ScrollView>
         {lastKnownLocation.length ? (
           <View style={styles.locationContainer}>
-            <TouchableHighlight onPress={goToLocation}>
+            <TouchableOpacity onPress={handleRefresh}>
               <Image
                 style={{ height: 50, width: 50 }}
                 source={require("../assets/locationIcon.png")}
               />
-            </TouchableHighlight>
-            <TouchableHighlight onPress={goToLocation}>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleRefresh}>
+              {language === "es-ES" ? (
+                <Text style={{ marginTop: 10 }}>Actualiza la ubicación</Text>
+              ) : (
+                <Text style={{ marginTop: 10 }}>Actualitza la ubicació</Text>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goToLocation}>
               <>
                 {language === "es-ES" ? (
                   <Text
@@ -303,14 +325,15 @@ export const Form = () => {
                   </Text>
                 )}
               </>
-            </TouchableHighlight>
-            <>
+            </TouchableOpacity>
+
+            {/* <>
               {language === "es-ES" ? (
-                <Text>Desliza para ver mas dias</Text>
+                <Text style={{ marginTop: 10}}>Desliza para ver mas dias</Text>
               ) : (
-                <Text>Llisca per veure més dies</Text>
+                <Text style={{ marginTop: 10}}>Llisca per veure més dies</Text>
               )}
-            </>
+            </> */}
           </View>
         ) : (
           <>
@@ -1524,14 +1547,14 @@ export const Form = () => {
             <ActivityIndicator size="large" />
           </View>
         ) : (
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.touchable}
             onPress={handleSubmitForm}
           >
             <Text onPress={handleSubmitForm} style={styles.button}>
               Guardar
             </Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         )}
       </ScrollView>
     </>
